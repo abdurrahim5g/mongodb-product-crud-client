@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { toast } from "react-hot-toast";
 
 const AddProduct = () => {
   const [product, setProduct] = useState({});
@@ -6,7 +7,23 @@ const AddProduct = () => {
   // handle form submit
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(product);
+
+    fetch(`http://localhost:5000/products`, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(product),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        if (data.acknowledged) {
+          toast.success("Product added sucessfuly 😍");
+          e.target.reset();
+        }
+      });
+    // console.log(product);
   };
 
   const handleOnChange = (e) => {
