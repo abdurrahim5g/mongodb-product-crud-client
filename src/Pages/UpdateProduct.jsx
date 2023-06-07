@@ -1,12 +1,37 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
+import { useLoaderData } from "react-router-dom";
 
 const UpdateProduct = () => {
+  const oldProduct = useLoaderData();
   const [product, setProduct] = useState({});
+
+  useEffect(() => {
+    setProduct(oldProduct);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  //   console.log(oldProduct);
 
   // handle form submit
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(product);
+
+    fetch(`http://localhost:5000/products/${product._id}`, {
+      method: "PUT",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(product),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.acknowledged & (data.matchedCount === 1)) {
+          toast.success("Product updated successfuly");
+        }
+        console.log(data);
+      });
+    // console.log(product);
   };
 
   const handleOnChange = (e) => {
@@ -15,7 +40,7 @@ const UpdateProduct = () => {
     const newProduct = { ...product };
     newProduct[name] = value;
     setProduct(newProduct);
-    // console.log(product);
+    console.log(product);
   };
 
   return (
@@ -25,8 +50,10 @@ const UpdateProduct = () => {
 
       <div className="product-add-form">
         <form className="grid gap-3" onSubmit={handleSubmit}>
-          <div className="single-input grid-rows-1">
+          <div className="single-input ">
+            <label htmlFor="">Title: </label>
             <input
+              defaultValue={oldProduct.name}
               onChange={handleOnChange}
               type="text"
               name="name"
@@ -34,8 +61,10 @@ const UpdateProduct = () => {
               className="input input-bordered w-full max-w-xs"
             />
           </div>
-          <div className="single-input grid-rows-1">
+          <div className="single-input ">
+            <label htmlFor="">Price: </label>
             <input
+              defaultValue={oldProduct.price}
               onChange={handleOnChange}
               type="text"
               name="price"
@@ -43,8 +72,10 @@ const UpdateProduct = () => {
               className="input input-bordered w-full max-w-xs"
             />
           </div>
-          <div className="single-input grid-rows-1">
+          <div className="single-input ">
+            <label htmlFor="">Quentity: </label>
             <input
+              defaultValue={oldProduct.quentity}
               onChange={handleOnChange}
               type="text"
               name="quentity"
@@ -52,16 +83,18 @@ const UpdateProduct = () => {
               className="input input-bordered w-full max-w-xs"
             />
           </div>
-          <div className="single-input grid-rows-1">
+          <div className="single-input ">
+            <label htmlFor="">Image URL: </label>
             <input
+              defaultValue={oldProduct.image}
               onChange={handleOnChange}
               type="url"
-              name="image_url"
+              name="image"
               placeholder="Image URL"
               className="input input-bordered w-full max-w-xs"
             />
           </div>
-          <div className="single-input grid-rows-1">
+          <div className="single-input ">
             <input
               type="submit"
               value={"Update Product"}

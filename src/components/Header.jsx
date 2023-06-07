@@ -4,13 +4,10 @@ const Header = () => {
   const menuItem = (
     <>
       <li>
-        <NavLink to={"/"}>Home</NavLink>
+        <NavLink to={"/"}>Products</NavLink>
       </li>
       <li>
         <NavLink to={"/add-product"}>Add Product</NavLink>
-      </li>
-      <li>
-        <NavLink to={"/update-product"}>Updaet Product</NavLink>
       </li>
     </>
   );

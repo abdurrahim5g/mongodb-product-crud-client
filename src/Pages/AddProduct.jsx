@@ -72,7 +72,7 @@ const AddProduct = () => {
             <input
               onChange={handleOnChange}
               type="url"
-              name="image_url"
+              name="image"
               placeholder="Image URL"
               className="input input-bordered w-full max-w-xs"
             />
